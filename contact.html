@@ -305,6 +305,16 @@
                                 </div>
                             </div>
                         </form>
+                        <style>
+                            .hidden {
+                                display: none !important
+                            }
+                        </style>
+
+                        <div id="thank-you" class="hidden text-center">
+                            <h2>✅ Thank you!</h2>
+                            <p>Your message has been sent. I’ll get back to you soon.</p>
+                        </div>
 
                     </div>
                 </div>
@@ -366,33 +376,37 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contactForm');
-            if (!form) return;
-
-            const ok = document.querySelector('.input-success');
-            const err = document.querySelector('.input-error');
-
-            function show(el) { if (el) el.classList.remove('hidden'); }
-            function hide(el) { if (el) el.classList.add('hidden'); }
+            const thankYou = document.getElementById('thank-you');
+            if (!form || !thankYou) return;
 
             form.addEventListener('submit', async (e) => {
-                e.preventDefault(); // stop reload
+                e.preventDefault(); // no reload
 
                 const data = new FormData(form);
-                // Netlify requires form-name in the payload
-                if (!data.has('form-name')) data.append('form-name', 'contact');
+                if (!data.has('form-name')) data.append('form-name', 'contact'); // safety
+
+                // Optional: button loading state
+                const btn = form.querySelector('button[type="submit"]');
+                if (btn) { btn.disabled = true; btn.dataset.t = btn.innerHTML; btn.innerHTML = 'Sending…'; }
 
                 try {
-                    await fetch('/', {
+                    // Post to the same path the form is on (works on any page/route)
+                    await fetch(window.location.pathname, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: new URLSearchParams(data).toString()
                     });
 
-                    hide(err); show(ok);   // show success
+                    form.classList.add('hidden');        // hide the form
+                    thankYou.classList.remove('hidden'); // show thank-you
                     form.reset();
-                } catch (error) {
-                    hide(ok); show(err);   // show error
-                    console.error('Form submit failed:', error);
+                } catch (err) {
+                    // Fallback: show your existing error paragraph
+                    const errP = document.querySelector('.input-error');
+                    if (errP) errP.classList.remove('hidden');
+                    console.error('Netlify form error:', err);
+                } finally {
+                    if (btn) { btn.disabled = false; btn.innerHTML = btn.dataset.t || 'Send Me Message'; }
                 }
             });
         });
