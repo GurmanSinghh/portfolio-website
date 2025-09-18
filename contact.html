@@ -361,6 +361,48 @@
     <script src="assets/js/wow.min.js"></script>
     <!-- SCRIPT JS-->
     <script src="assets/js/script.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('contactForm');
+            if (!form) return;
+
+            const ok = document.querySelector('.input-success');
+            const err = document.querySelector('.input-error');
+
+            function show(el) { if (el) el.classList.remove('hidden'); }
+            function hide(el) { if (el) el.classList.add('hidden'); }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault(); // stop reload
+
+                const data = new FormData(form);
+                // Netlify requires form-name in the payload
+                if (!data.has('form-name')) data.append('form-name', 'contact');
+
+                try {
+                    await fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(data).toString()
+                    });
+
+                    hide(err); show(ok);   // show success
+                    form.reset();
+                } catch (error) {
+                    hide(ok); show(err);   // show error
+                    console.error('Form submit failed:', error);
+                }
+            });
+        });
+    </script>
+
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact">
+        <input name="name"><input name="email"><input name="subject"><textarea name="message"></textarea>
+    </form>
+
 </body>
 
 </html>
