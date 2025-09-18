@@ -251,3 +251,21 @@ html, body {
         display: block;
     }
 }
+
+
+/* add this at the bottom of your CSS file */
+#thank-you {
+    color: #222; /* dark text for white background */
+    font-family: sans-serif;
+    margin-top: 2rem;
+}
+
+    #thank-you h2 {
+        color: #28a745; /* green success heading */
+        margin-bottom: 0.5rem;
+    }
+
+    #thank-you p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
