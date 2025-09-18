@@ -1,0 +1,253 @@
+﻿/* Safer mobile nav: make the drawer usable on phones */
+@media (max-width: 991px) {
+    .main-menu .navbar-collapse {
+        position: fixed; /* sit over content */
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: #333;
+        z-index: 9999;
+    }
+
+        .main-menu .navbar-collapse > ul {
+            max-height: calc(100vh - 80px); /* room for header */
+            overflow-y: auto;
+            padding: 25px 0;
+        }
+}
+
+/* Tame oversized headings on small screens */
+@media (max-width: 767px) {
+    .hero-content h2 { /* was ~70px */
+        font-size: clamp(32px, 9vw, 56px);
+    }
+
+    .single-page-hero-area h2 { /* was ~90px */
+        font-size: clamp(28px, 10vw, 54px);
+        line-height: 1.2;
+    }
+
+    .about-content-part p { /* was 24px */
+        font-size: clamp(16px, 4.5vw, 18px);
+        line-height: 1.5;
+    }
+
+    .section, .projects-area, .services-area, .contact-area, .blog-area {
+        padding-top: 56px;
+        padding-bottom: 56px;
+    }
+}
+
+/* Images never overflow */
+img, svg, video, canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Prevent sideways scroll from wide elements */
+html, body {
+    overflow-x: hidden;
+}
+
+@media (max-width: 991px) {
+    #magic-cursor {
+        display: none !important;
+    }
+}
+
+/* Hide on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    #magic-cursor, #magic-cursor #ball {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+/* Fallback by width */
+@media (max-width: 991px) {
+    #magic-cursor, #magic-cursor #ball {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .tilt img,
+    .tiltable img,
+    [data-tilt] img,
+    .hero-image img {
+        max-width: 85% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .main-footer .footer-top h2,
+    .main-footer .footer-top h2 a {
+        font-size: 45px !important;
+        line-height: 1.3 !important;
+    }
+}
+
+@media (max-width: 991px) {
+    /* footer h2 + anchor */
+    .main-footer .footer-top h2,
+    .main-footer .footer-top h2 a {
+        font-size: 45px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* tilted image: real <img> case */
+    .tilt img,
+    .tiltable img,
+    [data-tilt] img,
+    .hero-image img {
+        max-width: 85% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* Preloader fills the dynamic viewport, no overlay */
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    overflow: hidden;
+    background: transparent; /* reveal stays visible */
+}
+
+/* Use dynamic viewport height when available */
+@supports (height: 100dvh) {
+    .preloader {
+        height: 100dvh;
+        width: 100vw;
+    }
+}
+
+@supports not (height: 100dvh) {
+    .preloader {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+/* Make the SVG cover, including iOS safe areas, without overlaying it */
+.preloader > svg {
+    position: absolute;
+    /* Expand to bleed into notch/home areas */
+    top: calc(-1 * env(safe-area-inset-top, 0px));
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    height: calc(100% + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+    display: block;
+}
+
+/* Keep 'Loading' text above the SVG */
+.preloader .preloader-heading {
+    position: relative;
+    z-index: 2;
+}
+
+/* Reset margins so nothing introduces gaps */
+html, body {
+    margin: 0;
+}
+
+
+/* Preloader fills dynamic viewport */
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    overflow: hidden;
+    background: transparent; /* reveal stays visible */
+    width: 100vw;
+    height: 100vh; /* base */
+}
+
+@supports (height: 100dvh) {
+    .preloader {
+        height: 100dvh;
+    }
+    /* dynamic viewport on iOS/Android */
+}
+
+@supports (height: 100svh) {
+    .preloader {
+        min-height: 100svh;
+    }
+    /* small viewport fallback */
+}
+
+/* Make SVG bleed into notch AND a bit below the bottom toolbar */
+.preloader > svg {
+    position: absolute;
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    top: calc(-1 * env(safe-area-inset-top, 0px));
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    height: calc( 100% + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 24px ); /* +24px overscan to cover address bar zone */
+    display: block;
+}
+
+/* Keep 'Loading' text above */
+.preloader .preloader-heading {
+    position: relative;
+    z-index: 2;
+}
+
+/* No stray margins */
+html, body {
+    margin: 0;
+}
+
+/* Desktop/tablet: keep single line */
+@media (min-width: 992px) {
+    .hero-content {
+        max-width: 100% !important;
+    }
+
+        .hero-content h2 {
+            white-space: nowrap !important;
+            max-width: none !important;
+            letter-spacing: normal !important;
+        }
+}
+
+/* Phones: allow wrapping AND constrain width so it breaks */
+@media (max-width: 991px) {
+    .hero-content h2 {
+        white-space: normal !important; /* allow wrap */
+        display: inline-block; /* so max-width applies to the text */
+        max-width: 12ch; /* tweak: 10–14ch to control where it breaks */
+        line-height: 1.15; /* tighter lines look nicer */
+        text-align: center; /* optional */
+    }
+}
+
+.hero-content h2 {
+    letter-spacing: normal !important;
+}
+
+/* Desktop: keep it inline (1 line) */
+@media (min-width: 992px) {
+    .hero-content h2 .name-break {
+        display: inline;
+    }
+}
+
+/* Phones: force break (2 lines) */
+@media (max-width: 991px) {
+    .hero-content h2 .name-break {
+        display: block;
+    }
+}
